@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from sklearn import linear_model, preprocessing, model_selection
+from sklearn import linear_model, preprocessing, model_selection, tree
 
 def eda(df):
     print(df.head())
@@ -33,6 +33,15 @@ def logistic_regression_eval(X_train, X_test, y_train, y_test):
             'model': gs.best_estimator_,
             'params': gs.best_params_}
 
+def decision_tree_eval(X_train, X_test, y_train, y_test):
+    decision_tree_model = tree.DecisionTreeClassifier()
+    param_grid = {'max_depth': [5, 10, 25, 50, 75, 100, 150]}
+    gs = model_selection.GridSearchCV(estimator=decision_tree_model, param_grid=param_grid, n_jobs=-1)
+    gs.fit(X_train, y_train)
+    return {'score': gs.best_score_,
+            'model': gs.best_estimator_,
+            'params': gs.best_params_}
+
 if __name__ == "__main__":
     
     df = pd.read_csv('train.csv')
@@ -41,4 +50,4 @@ if __name__ == "__main__":
 
     X_train, X_test, y_train, y_test = model_selection.train_test_split(X, y, test_size=0.2)
 
-    print(logistic_regression_eval(X_train, X_test, y_train, y_test))
+    print(decision_tree_eval(X_train, X_test, y_train, y_test))
