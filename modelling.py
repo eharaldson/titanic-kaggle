@@ -158,6 +158,7 @@ def label_from_proba(probs):
     return positive_class.int()
 
 def nn_eval():
+
     data = TitanicDataset()
 
     train_data, validation_data, test_data = torch.utils.data.random_split(data, [0.7, 0.15, 0.15])
@@ -186,7 +187,7 @@ def nn_eval():
 
     nn = NNClassification()
 
-    nn = train(nn, data_loaders, epochs=80)
+    nn = train(nn, data_loaders, epochs=60)
 
     features, labels = next(iter(data_loaders['validation']))
     predictions = nn(features)
